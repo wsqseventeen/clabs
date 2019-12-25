@@ -1,9 +1,8 @@
 #include <stdio.h> 
 #include <stdlib.h> 
 #include <ctype.h> 
-#include <math.h>
- 
-#define MAXOP 200     
+#include <string.h>
+ #define MAXOP 200     
 #define NUMBER '0'     
 #define MAXVAL 200     
 #define BUFSIZE 200 
@@ -54,7 +53,7 @@ int main (){
 			case '%': 
 				op2 = pop(); 
 				if( op2 != 0.0)
-				       push (fmod(pop(),op2));
+				       push((int)pop()%(int)op2);
 				else printf("error : zero divisor\n");
 				break; 
 			 
@@ -127,4 +126,3 @@ double pop (void)
 		return val[--sp]; 
 	else printf("error : stack empty!\n"); 
 	} 
-
