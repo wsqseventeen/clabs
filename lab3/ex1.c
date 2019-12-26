@@ -1,32 +1,48 @@
-#include<stdio.h>
-#define yes 1
-#define no 0
-int main()
+#include <stdio.h>
+#define MAXLINE 1000
+int p;
+int m = 0;
+int judge(char source[], char searchfor[]);
+int main(void)
 {
-return 0;
+char s[MAXLINE];
+char t[MAXLINE];
+int n = 0;
+while ((s[m] = getchar()) != EOF)
+{
+if (s[m] == ' ')
+{
+break;
 }
-int htoi(char s[])
+m++;
+}
+while (s[m] == ' ' && (t[n] = getchar()) != EOF && t[n] != '\n')
 {
-int hexdigit ,n, inhex,i;
-i=0;
-if(s[i]=='0')
+if (t[n] == '\n')
 {
-i++;
-if(s[i]=='x'||s[i]=='X')
-{
-i++;
+break;
+}
+n++;
+}
+p = n - 1;
+if (judge(s, t) >= 0){
+printf("%d",judge(s, t) + 1 );
+}
+else {
+printf("no");
 }
 }
-n=0;
-inhex=yes;
-for(;inhex==yes;i++)
+int judge(char s[], char t[])
 {
-if(s[i]>='0'&&s[i]<='9') hexdigit=s[i]-'0';
-else if(s[i]>='a'&&s[i]<='f')hexdigit=s[i]-'a'+10;
-else if(s[i]>='A'&&s[i]<='F')hexdigit=s[i]-'A'+10;
-else inhex=no;
-if(inhex==yes)
-n=16*n+hexdigit;
+int i, j, k;
+for (i = m - 1; i > 0; i--)
+{
+for (j = i, k = p; s[j] == t[k]; j--, k--)
+;
+if (k < 0)
+{
+return j;
 }
-return n;
+}
+return -1;
 }
