@@ -1,58 +1,54 @@
 #include <stdio.h>
-#include <string.h>
-int day_diff(int year_start, int month_start, int day_start, int year_end, int month_end, int day_end);
-int main( int argc, char *argv[] )
+int dayofyear(int year, int month, int day);
+void make(char s[]);
+int year0, month0, day0;
+int main(int argc, char *argv[])
 {
-
-int *year1;
-int year_start;
-int *month1;
-int month_start;
-int *day1;
-int day_start;
-int *year2;
-int year_end;
-int *month2;
-int month_end;
-int *day2;
-int day_end;
-//   printf("请输入两个时间（参数一时间较早）：%s %s\n", argv[0], argv[1]);
-//   printf("第%d个参数为：%s\n", 1 , argv[1] );
-//   printf("第%d个参数为：%s\n", 2 , argv[2] );
-year1 = strtok(argv[1], "/");
-year_start = atoi(year1);
-//printf( "%d\n", year_start);
-
-month1 = strtok(NULL, "/");
-month_start = atoi(month1);
-//printf( "%d\n", month_start );
-day1 = strtok(NULL, "/");
-day_start = atoi(day1);
-//printf( "%d\n", day_start );
-year2 = strtok(argv[2], "/");
-year_end = atoi(year2);
-//printf( "%d\n", year_end);
-
-month2 = strtok(NULL, "/");
-month_end = atoi(month2);
-//printf( "%d\n", month_end );
-day2 = strtok(NULL, "/");
-day_end = atoi(day2);
-//printf( "%d\n", day_end);
-int diff=day_diff( year_start,  month_start,  day_start,  year_end,  month_end,  day_end);
-  printf( "%d\n", diff ); 
-    return 0;
+int m, n, i, daym, dayn, dayd, year1, leap0;
+year0 = 0, month0 = 0, day0 = 0;
+make(argv[1]);
+m = dayofyear(year0, month0, day0);
+year1 = year0;
+year0 = 0, month0 = 0, day0 = 0;
+make(argv[2]);
+n = dayofyear(year0, month0, day0);
+int q = year0 - year1;
+for (i = 0, dayn = 0; i < q; i++, year1++)
+{
+leap0 = (year1 % 4 == 0 && year1 % 100 != 0) || (year1 % 400 == 0);
+if (leap0 == 0)
+daym = 365;
+if (leap0 == 1)
+daym = 366;
+dayn += daym;
 }
-int day_diff(int year_start, int month_start, int day_start, int year_end, int month_end, int day_end)
+dayd = dayn + n - m+1;
+printf("the days are:%d\n", dayd);
+}
+static char daytab[2][13] = {
+{0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31},
+{0, 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31}};
+int dayofyear(int year, int month, int day)
 {
- int y2, m2, d2;
- int y1, m1, d1;
- m1 = (month_start + 9) % 12;
- y1 = year_start - m1/10;
- d1 = 365*y1 + y1/4 - y1/100 + y1/400 + (m1*306 + 5)/10 + (day_start - 1);
-// printf( "%d\n", d1 );
- m2 = (month_end + 9) % 12;
- y2 = year_end - m2/10;
- d2 = 365*y2 + y2/4 - y2/100 + y2/400 + (m2*306 + 5)/10 + (day_end - 1);
- //printf( "%d\n", d2 );
- return (d2 - d1 + 1);
+int i, leap;
+leap = (year % 4 == 0 && year % 100 != 0) || (year % 400 == 0);
+for (i = 1; i < month; i++)
+day += daytab[leap][i];
+return day;
+}
+void make(char s[])
+{
+int i;
+for (i = 0; s[i] != '/'; i++)
+{
+year0 = year0 * 10 + (s[i] - '0');
+}
+for (i =i+ 1; s[i] != '/'; i++)
+{
+month0 = month0 * 10 + (s[i] - '0');
+}
+for (i =i+1; s[i] != '\0'; i++)
+{
+day0 = day0 * 10 + (s[i] - '0');
+}
+}
